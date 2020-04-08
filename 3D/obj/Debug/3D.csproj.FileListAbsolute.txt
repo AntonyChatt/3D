@@ -1,0 +1,10 @@
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\bin\Debug\3D.exe.config
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\bin\Debug\3D.exe
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\bin\Debug\3D.pdb
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\3D.csprojAssemblyReference.cache
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\_3D.Form1.resources
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\_3D.Properties.Resources.resources
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\3D.csproj.GenerateResource.cache
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\3D.csproj.CoreCompileInputs.cache
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\3D.exe
+C:\Users\Ольга\Desktop\ndbvc\cg\3D\3D\obj\Debug\3D.pdb
