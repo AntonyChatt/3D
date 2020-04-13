@@ -18,13 +18,15 @@ namespace _3D
         Pen turn1Pen = new Pen(Color.Tomato, 2);
         Pen turn2Pen = new Pen(Color.Plum, 2);
         Pen turn3Pen = new Pen(Color.DarkTurquoise, 2);
+        Pen AIPen = new Pen(Color.SpringGreen, 2);
+        Pen ScalePen = new Pen(Color.DarkSeaGreen, 2);
 
         float x0;
         float y0;
         float interval;
-        float lyambda=15;
+        float lyambda=40;
 
-        float[,] globalMatrix = new float[12, 6];
+        float[,] globalMatrix = new float[6, 4];
 
         public Form1()
         {
@@ -38,9 +40,9 @@ namespace _3D
 
         float[,] multiplier (float[,] a, float[,] b)
         {
-            float[,] buff = new float[12,4];
+            float[,] buff = new float[6,4];
 
-            for ( int i =0; i < 12; i++)
+            for ( int i =0; i < 6; i++)
             {
                 for ( int j =0; j < 4; j++)
                 {
@@ -108,31 +110,24 @@ namespace _3D
             float interval = ClientSize.Width / 20;
 
             PointF[] global =
-            {
+            {         
                 new PointF(points[0,0], points[0,1]),
-                new PointF(points[1,0], points[1,1]),
-                new PointF(points[7,0], points[7,1]),
-                new PointF(points[1,0], points[1,1]),
-                new PointF(points[2,0], points[2,1]),
-                new PointF(points[8,0], points[8,1]),
-                new PointF(points[2,0], points[2,1]),
-                new PointF(points[3,0], points[3,1]),
-                new PointF(points[9,0], points[9,1]),
-                new PointF(points[3,0], points[3,1]),
-                new PointF(points[4,0], points[4,1]),
-                new PointF(points[10,0], points[10,1]),
-                new PointF(points[4,0], points[4,1]),
-                new PointF(points[5,0], points[5,1]),
-                new PointF(points[11,0], points[11,1]),
                 new PointF(points[5,0], points[5,1]),
                 new PointF(points[0,0], points[0,1]),
-                new PointF(points[6,0], points[6,1]),
-                new PointF(points[7,0], points[7,1]),
-                new PointF(points[8,0], points[8,1]),
-                new PointF(points[9,0], points[9,1]),
-                new PointF(points[10,0], points[10,1]),
-                new PointF(points[11,0], points[11,1]),
-                new PointF(points[6,0], points[6,1]),
+                new PointF(points[1,0], points[1,1]),
+                new PointF(points[5,0], points[5,1]),
+                new PointF(points[1,0], points[1,1]),
+                new PointF(points[2,0], points[2,1]),
+                new PointF(points[5,0], points[5,1]),
+                new PointF(points[2,0], points[2,1]),
+                new PointF(points[3,0], points[3,1]),
+                new PointF(points[5,0], points[5,1]),
+                new PointF(points[3,0], points[3,1]),
+                new PointF(points[4,0], points[4,1]),
+                new PointF(points[5,0], points[5,1]),
+                new PointF(points[4,0], points[4,1]),
+                new PointF(points[0,0], points[0,1]),
+
             };
 
             g.DrawPolygon(polygonPen, global);
@@ -183,6 +178,43 @@ namespace _3D
             drawPolygon(g, globalMatrix, turn3Pen);
         }
 
+        void scale (Graphics g, float SS)
+        {
+            float[,] Sscale =
+           {
+                { SS, 0, 0, 0 },
+                { 0, SS, 0, 0 },
+                { 0, 0, SS, 0 },
+                {0, 0, 0, 0 },
+            };
+
+            globalMatrix = multiplier(globalMatrix, Sscale);
+
+            drawPolygon(g, globalMatrix, ScalePen);
+        }
+
+        void AI (Graphics g)
+        {
+            float[,] AAAAI =
+          {
+                { 1, 0, 0, 0.002f },
+                { 0, 1, 0, 0.002f },
+                { 0, 0, 1, 0.002f },
+                { 0, 0, 0, 1 },
+            };
+
+            globalMatrix = multiplier(globalMatrix, AAAAI);
+
+            for (int i = 0; i < 6; i++)
+            {
+                globalMatrix[i, 0] = globalMatrix[i, 0] / globalMatrix[i, 3];
+                globalMatrix[i, 1] = globalMatrix[i, 1] / globalMatrix[i, 3];
+                globalMatrix[i, 2] = globalMatrix[i, 2] / globalMatrix[i, 3];
+            }
+
+            drawPolygon(g, globalMatrix, AIPen);
+        }
+
         private void Button1_Click(object sender, EventArgs e)
         {
             Refresh();
@@ -193,19 +225,22 @@ namespace _3D
 
             interval = ClientSize.Width / 20;
 
+            float[] x = new float[5];
+            float[] y = new float[5];
+
+            for ( int i=0; i< 5; i++)
+            {
+                x[i] = 100 * (float)Math.Cos( 2 * Math.PI * i / 5);
+                y[i] = 100 * (float)Math.Sin( 2 * Math.PI * i / 5);
+            }
+
              float[,] initialState = {
-                { -2 * interval, -2 * interval, lyambda, 1 },
-                { -2 * interval, 2 * interval, lyambda, 1 },
-                { 2 * interval, 2 * interval, lyambda, 1 },
-                { 3 * interval, 3 * interval, lyambda, 1 },
-                { 4 * interval, 0, lyambda, 1 },
-                { 2 * interval, -2 * interval, lyambda, 1 },
-                { -2 * interval, -2 * interval, -lyambda, 1 },
-                { -2 * interval, 2 * interval, -lyambda, 1 },
-                { 2 * interval, 2 * interval, -lyambda, 1 },
-                { 3 * interval, 3 * interval, -lyambda, 1 },
-                { 4 * interval, 0, -lyambda, 1 },
-                { 2 * interval, -2 * interval, -lyambda, 1 },
+                { x[0], y[0], lyambda, 1 },
+                { x[1], y[1], lyambda, 1 },
+                { x[2], y[2], lyambda, 1 },
+                { x[3], y[3], lyambda, 1 },
+                { x[4], y[4], lyambda, 1 },
+                {0, 0, -lyambda, 1 },                
             };
 
             globalMatrix = initialState;
@@ -216,6 +251,9 @@ namespace _3D
             button2.Enabled = true;
             button3.Enabled = true;
             button4.Enabled = true;
+            button5.Enabled = true;
+            button6.Enabled = true;
+
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -223,7 +261,7 @@ namespace _3D
             Refresh();
             Graphics g = this.CreateGraphics();
 
-            float alpha = 70;
+            float alpha = -45;
 
             drawAxises(g, x0, y0);
             turnX(g, alpha);
@@ -235,7 +273,7 @@ namespace _3D
             Refresh();
             Graphics g = this.CreateGraphics();
 
-            float alpha = 70;           
+            float alpha = (float)35.26;           
 
             drawAxises(g, x0, y0);
             turnY(g, alpha);
@@ -250,6 +288,28 @@ namespace _3D
 
             drawAxises(g, x0, y0);
             turnZ(g, alpha);
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            Refresh();
+            Graphics g = this.CreateGraphics();
+
+            drawAxises(g, x0, y0);
+
+            float SS = 2;
+
+            scale(g, SS);
+        }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            Refresh();
+            Graphics g = this.CreateGraphics();
+
+            drawAxises(g, x0, y0);
+
+            AI(g);
         }
     }
 }
